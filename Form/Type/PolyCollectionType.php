@@ -63,6 +63,20 @@ class PolyCollectionType extends AbstractType
     protected function buildPrototypes(FormBuilderInterface $builder, array $options)
     {
         $prototypes = array();
+
+
+        if (isset($options['depth'])) {
+            $depth = $options['depth'] + 1;
+        } else {
+            $depth = 1;
+        }
+
+        $options['options']['depth'] = $depth;
+
+        if (isset($options['max_depth']) && $options['max_depth'] < $depth) {
+            return $prototypes;
+        }
+
         foreach ($options['types'] as $type) {
             $key = $type instanceof FormTypeInterface ? $type->getName() : $type;
 
@@ -138,7 +152,6 @@ class PolyCollectionType extends AbstractType
     {
         $optionsNormalizer = function (Options $options, $value) {
             $value['block_name'] = 'entry';
-
             return $value;
         };
         
@@ -149,6 +162,8 @@ class PolyCollectionType extends AbstractType
             'prototype_name' => '__name__',
             'type_name'      => '_type',
             'options'        => array(),
+            'max_depth'      => null,
+            'depth'          => 1
         ));
 
         $resolver->setRequired(array(
