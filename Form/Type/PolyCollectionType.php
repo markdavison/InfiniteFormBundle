@@ -64,12 +64,12 @@ class PolyCollectionType extends AbstractType
     {
         $prototypes = array();
 
-
+        $depth = 0;
         if (isset($options['depth'])) {
-            $depth = $options['depth'] + 1;
-        } else {
-            $depth = 1;
+            $depth = $options['depth'];
         }
+
+	$depth++;
 
         $options['options']['depth'] = $depth;
 
@@ -163,7 +163,7 @@ class PolyCollectionType extends AbstractType
             'type_name'      => '_type',
             'options'        => array(),
             'max_depth'      => null,
-            'depth'          => 1
+            'depth'          => 0
         ));
 
         $resolver->setRequired(array(
